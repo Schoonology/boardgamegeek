@@ -1,0 +1,12 @@
+{
+  "name": "boardgamegeek",
+  "version": "0.1.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "Michael Schoonmaker <michael.r.schoonmaker@gmail.com> (https://www.schoonology.com/)",
+  "license": "MIT"
+}

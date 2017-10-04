@@ -4,9 +4,16 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "teenytest --plugin teenytest-promise test/**/*.js"
   },
   "keywords": [],
   "author": "Michael Schoonmaker <michael.r.schoonmaker@gmail.com> (https://www.schoonology.com/)",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "sax": "~1.2.4"
+  },
+  "devDependencies": {
+    "teenytest": "~5.0.2",
+    "teenytest-promise": "~1.0.0"
+  }
 }

@@ -3,8 +3,9 @@ var mapper = require('./lib/mapper')
 var querystring = require('querystring')
 var parser = require('./lib/parser')
 var ROOT_URL = 'https://www.boardgamegeek.com/xmlapi2'
+var api = {}
 
-function get(path, query) {
+api.get = function get(path, query) {
   var stream = parser.stream()
 
   https.get(
@@ -15,40 +16,42 @@ function get(path, query) {
   return parser.capture(stream)
 }
 
-function getUser(name) {
-  return get('user', {
+api.getUser = function getUser(name) {
+  return api.get('user', {
     name
   })
     .then(mapper.mapUserResponse)
 }
 
-function getThing(id) {
-  return get('thing', {
+api.getThing = function getThing(id) {
+  return api.get('thing', {
     id
   })
 }
 
-function getThings(ids) {
-  return get('thing', {
+api.getThings = function getThings(ids) {
+  return api.get('thing', {
     id: ids.join(',')
   })
 }
 
-function search(options) {
-  return get('search', options)
+api.search = function search(options) {
+  return api.get('search', options)
     .then((response) => ({
       total: Number(response.items[0].total),
       items: response.items[0].item
     }))
 }
 
-function getBoardGame(name) {
-  return search({
+api.getBoardGame = function getBoardGame(name) {
+  return api.search({
     query: name,
     type: 'boardgame',
     exact: 1
   })
     .then((response) => response.items[0])
-    .then((result) => getThing(result.id))
+    .then((result) => api.getThing(result.id))
     .then(mapper.mapBoardGameResponse)
 }
+
+module.exports = api

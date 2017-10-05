@@ -49,8 +49,24 @@ api.getBoardGame = function getBoardGame(name) {
     type: 'boardgame',
     exact: 1
   })
-    .then((response) => response.items[0])
-    .then((result) => api.getThing(result.id))
+    .then(function (response) {
+      if (response.total === 0 || !response.items) {
+        return api.search({
+          query: name,
+          type: 'boardgame',
+          exact: 0
+        })
+      }
+
+      return response
+    })
+    .then(function (response) {
+      if (response.total === 0 || !response.items) {
+        return null
+      }
+
+      return api.getThing(response.items[0].id)
+    })
     .then(mapper.mapBoardGameResponse)
 }
 

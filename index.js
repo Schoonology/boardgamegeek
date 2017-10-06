@@ -23,16 +23,15 @@ api.getUser = function getUser(name) {
     .then(mapper.mapUserResponse)
 }
 
-api.getThing = function getThing(id) {
+api.getThing = function getThing(id, options) {
   return api.get('thing', {
-    id
+    id,
+    stats: (options && options.stats) ? 1 : 0
   })
 }
 
-api.getThings = function getThings(ids) {
-  return api.get('thing', {
-    id: ids.join(',')
-  })
+api.getThings = function getThings(ids, options) {
+  return api.getThing(ids.join(','), options)
 }
 
 api.search = function search(options) {
@@ -65,7 +64,7 @@ api.getBoardGame = function getBoardGame(name) {
         return null
       }
 
-      return api.getThing(response.items[0].id)
+      return api.getThing(response.items[0].id, { stats: true })
     })
     .then(mapper.mapBoardGameResponse)
 }

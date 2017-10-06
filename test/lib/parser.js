@@ -1,6 +1,6 @@
 var assert = require('assert')
 var EventEmitter = require('events')
-var parser = require('../lib/parser')
+var parser = require('../../lib/parser')
 
 module.exports = {
   'exports an object'() {

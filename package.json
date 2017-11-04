@@ -10,6 +10,7 @@
   "author": "Michael Schoonmaker <michael.r.schoonmaker@gmail.com> (https://www.schoonology.com/)",
   "license": "MIT",
   "dependencies": {
+    "entities": "~1.1.1",
     "sax": "~1.2.4"
   },
   "devDependencies": {

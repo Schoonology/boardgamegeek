@@ -26,7 +26,8 @@ api.getUser = function getUser(name) {
 api.getThing = function getThing(id, options) {
   return api.get('thing', {
     id,
-    stats: (options && options.stats) ? 1 : 0
+    stats: (options && options.stats) ? 1 : 0,
+    type: options.type
   })
 }
 
@@ -42,17 +43,20 @@ api.search = function search(options) {
     }))
 }
 
-api.getBoardGame = function getBoardGame(name) {
+function findThing(name, options) {
+  var searchType = options && (options.searchType || options.type)
+  var getType = options && (options.getType || options.type)
+
   return api.search({
     query: name,
-    type: 'boardgame',
+    type: searchType,
     exact: 1
   })
     .then(function (response) {
       if (response.total === 0 || !response.items) {
         return api.search({
           query: name,
-          type: 'boardgame',
+          type: searchType,
           exact: 0
         })
       }
@@ -64,8 +68,27 @@ api.getBoardGame = function getBoardGame(name) {
         return null
       }
 
-      return api.getThing(response.items[0].id, { stats: true })
+      return api.getThing(response.items[0].id, {
+        stats: true,
+        type: getType
+      })
     })
+}
+
+api.getBoardGame = function getBoardGame(name, options) {
+  var includeExpansions = options && options.includeExpansions
+
+  return findThing(name, {
+    searchType: 'boardgame',
+    getType: includeExpansions ? null : 'boardgame'
+  })
+    .then(mapper.mapBoardGameResponse)
+}
+
+api.getBoardGameExpansion = function getBoardGameExpansion(name) {
+  return findThing(name, {
+    type: 'boardgameexpansion'
+  })
     .then(mapper.mapBoardGameResponse)
 }
 

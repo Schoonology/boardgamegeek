@@ -2,6 +2,10 @@
 
 A read-only JSON client for the BoardGameGeek API.
 
+## Original documentation
+
+The original documentation can be found [here](https://boardgamegeek.com/wiki/page/BGG_XML_API2).
+
 ## Alternatives
 
 If you search NPM, you'll realize there are several alternatives to this library:

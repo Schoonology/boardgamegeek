@@ -35,8 +35,17 @@ api.getThings = function getThings(ids, options) {
   return api.getThing(ids.join(','), options)
 }
 
+function handleErrors(response) {
+  if (response.error) {
+    return Promise.reject(new Error(response.error[0].message))
+  }
+
+  return response
+}
+
 api.search = function search(options) {
   return api.get('search', options)
+    .then((response) => handleErrors(response))
     .then((response) => ({
       total: Number(response.items[0].total),
       items: response.items[0].item

@@ -55,6 +55,7 @@ api.search = function search(options) {
 function findThing(name, options) {
   var searchType = options && (options.searchType || options.type)
   var getType = options && (options.getType || options.type)
+  var exact = options && options.exact
 
   return api.search({
     query: name,
@@ -62,7 +63,7 @@ function findThing(name, options) {
     exact: 1
   })
     .then(function (response) {
-      if (response.total === 0 || !response.items) {
+      if ((response.total === 0 || !response.items) && !exact) {
         return api.search({
           query: name,
           type: searchType,
@@ -86,8 +87,10 @@ function findThing(name, options) {
 
 api.getBoardGame = function getBoardGame(name, options) {
   var includeExpansions = options && options.includeExpansions
+  var exact = options && options.exact
 
   return findThing(name, {
+    exact: !!exact,
     searchType: 'boardgame',
     getType: includeExpansions ? null : 'boardgame'
   })
@@ -95,7 +98,10 @@ api.getBoardGame = function getBoardGame(name, options) {
 }
 
 api.getBoardGameExpansion = function getBoardGameExpansion(name) {
+  var exact = options && options.exact
+
   return findThing(name, {
+    exact: !!exact,
     type: 'boardgameexpansion'
   })
     .then(mapper.mapBoardGameResponse)
